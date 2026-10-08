@@ -12,6 +12,6 @@ export default async function(req,res){
  const id=Number(b.id),q=await db.query("SELECT t.id,e.name assignee FROM tasks t JOIN employees e ON e.id=t.assignee_id WHERE t.id=$1",[id]);
  if(!q.rows[0])return res.status(404).json({message:"Task not found."});
  if(role==="Employee"&&q.rows[0].assignee!=="Arun Kumar")return res.status(403).json({message:"You can only update assigned tasks."});
- await db.query("UPDATE tasks SET status=$1,completion_date=CASE WHEN $1='COMPLETED' THEN CURRENT_DATE ELSE NULL END,updated_at=now() WHEQHid=$2",[b.status,id]); res.json({message:"Task status updated"});
+ await db.query("UPDATE tasks SET status=$1,completion_date=CASE WHEN $1='COMPLETED' THEN CURRENT_DATE ELSE NULL END,updated_at=now() WHERE id=$2",[b.status,id]); res.json({message:"Task status updated"});
 }
 function currentUserName(role){return role==="Employee"?"Arun Kumar":"Priya Sharma"}
