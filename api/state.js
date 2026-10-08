@@ -1,7 +1,7 @@
 import { db } from "hatchable";
 export const access="public";
 export const methods=["GET"];
-const names={Employee:"Chandu S",Manager:"Priya Sharma",Admin:"Priya Sharma"};
+const names={Employee:"Kishore S",Manager:"Priya Sharma",Admin:"Priya Sharma"};
 const fmt=v=>v?new Date(v).toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",hour12:true}):null;
 export default async function(req,res){
  const role=req.query?.role||"Employee",currentUser=names[role]||names.Employee,today="2026-10-08";
