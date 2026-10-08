@@ -12,7 +12,7 @@ export default async function(req,res){
  const att=(await db.query("SELECT * FROM attendance WHERE employee_id=$1 AND work_date BETWEEN '2026-10-01' AND '2026-10-31' ORDER BY work_date DESC",[user.id])).rows;
  const teamAtt=(await db.query("SELECT a.*,e.name employee,e.department FROM attendance a JOIN employees e ON e.id=a.employee_id WHERE a.work_date=$1 ORDER BY e.id",[today])).rows;
  const acts=(await db.query("SELECT a.*,p.name project,e.name employee FROM activities a JOIN projects p ON p.id=a.project_id JOIN employees e ON e.id=a.employee_id WHERE a.employee_id=$1 ORDER BY a.activity_date DESC,a.start_time DESC",[user.id])).rows;
- const teamActs=(await db.query("SELECT a.*,p.name project,e.name employee FROM activities a JOIN projects p ON p.id=a.project_id JOIN employees e ON e.id=a.employee_id WHERE a.activity_date=$1 ORDER BY a.start_time,e.id",[today])).rows;
+ const teamActs=(await db.query("SELECT a.*,p.name project,e.name employee FROM activities a JOIN projects p ON p.id=a.project_id JOIN employees e ON e.id=a.employee_id WHERE a.activity_date BETWEEN '2026-10-01' AND '2026-10-08' ORDER BY a.activity_date DESC,a.start_time,e.id")).rows;
  const work=att.filter(a=>a.status!=="WEEKEND"),present=work.filter(a=>["PRESENT","LATE"].includes(a.status)).length,late=work.filter(a=>a.status==="LATE").length,absent=work.filter(a=>a.status==="ABSENT").length;
  const ta=att.find(a=>String(a.work_date).slice(0,10)===today),actsToday=acts.filter(a=>String(a.activity_date).slice(0,10)===today);
  const hoursToday=actsToday.reduce((s,a)=>s+a.duration_minutes,0),hoursWeek=acts.reduce((s,a)=>s+a.duration_minutes,0);

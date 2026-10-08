@@ -1,5 +1,5 @@
 import { db } from "hatchable";
-export const access="public"; export const methods=["POST","PATCH"];
+export const access="public"; export const methods=["POST","PUT"];
 export default async function(req,res){
  const b=req.body||{},role=b.role||"Employee";
  if(req.method==="POST"){
