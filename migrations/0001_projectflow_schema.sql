@@ -1,0 +1,9 @@
+CREATE TABLE employees(id BIGSERIAL PRIMARY KEY,name TEXT NOT NULL,role TEXT NOT NULL,department TEXT NOT NULL);
+CREATE TABLE projects(id BIGSERIAL PRIMARY KEY,name TEXT NOT NULL,code TEXT NOT NULL,status TEXT NOT NULL,start_date DATE NOT NULL,target_date DATE NOT NULL,manager TEXT NOT NULL);
+CREATE TABLE tasks(id BIGSERIAL PRIMARY KEY,title TEXT NOT NULL,description TEXT,project_id BIGINT NOT NULL REFERENCES projects(id),assignee_id BIGINT NOT NULL REFERENCES employees(id),created_by TEXT NOT NULL,priority TEXT NOT NULL,status TEXT NOT NULL,start_date DATE NOT NULL,due_date DATE NOT NULL,completion_date DATE,comments TEXT,created_at TIMESTAMP NOT NULL DEFAULT now(),updated_at TIMESTAMP NOT NULL DEFAULT now());
+CREATE TABLE attendance(id BIGSERIAL PRIMARY KEY,employee_id BIGINT NOT NULL REFERENCES employees(id),work_date DATE NOT NULL,status TEXT NOT NULL,check_in TIMESTAMP,check_out TIMESTAMP,hours_minutes INTEGER,UNIQUE(employee_id,work_date));
+CREATE TABLE activities(id BIGSERIAL PRIMARY KEY,employee_id BIGINT NOT NULL REFERENCES employees(id),project_id BIGINT NOT NULL REFERENCES projects(id),activity_date DATE NOT NULL,title TEXT NOT NULL,description TEXT NOT NULL,start_time TIME NOT NULL,end_time TIME NOT NULL,duration_minutes INTEGER NOT NULL,activity_type TEXT NOT NULL,created_at TIMESTAMP NOT NULL DEFAULT now(),updated_at TIMESTAMP NOT NULL DEFAULT now());
+CREATE INDEX idx_tasks_assignee ON tasks(assignee_id);
+CREATE INDEX idx_tasks_due ON tasks(due_date);
+CREATE INDEX idx_attendance_employee_date ON attendance(employee_id,work_date);
+CREATE INDEX idx_activity_employee_date ON activities(employee_id,activity_date);
